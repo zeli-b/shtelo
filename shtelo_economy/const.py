@@ -1,0 +1,1 @@
+ELIT_SYMBOL = 'ē'
