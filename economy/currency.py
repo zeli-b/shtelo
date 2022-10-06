@@ -20,6 +20,9 @@ class Currency:
     def __str__(self) -> str:
         return f'{self.code}({self.symbol})'
 
+    def __eq__(self, other: 'Currency') -> bool:
+        return self.code == other.code
+
     def get_expectation(self) -> float:
         try:
             return self.total_value / (self.total_currency - self.rotating)

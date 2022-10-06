@@ -36,8 +36,12 @@ class Company:
                              f'trying to pay {self.currency.symbolize(amount)}. '
                              f'(``self.id``={self.id}, ``other.id``={other.id})')
 
-        self.balance -= amount
-        other.balance += amount
+        if self.currency == other.currency:
+            self.balance -= amount
+            other.balance += amount
+        else:
+            elit = self.pay(2)
+            other.earn(elit)
 
     def get_paid_by(self, other: 'Company', amount: float):
         return other.pay_to(self, amount)
