@@ -29,6 +29,20 @@ class Currency:
         except ZeroDivisionError:
             return inf
 
+    def get_exchange_rate_to(self, other: 'Currency') -> float:
+        """
+        Returns exchange rate from ``self`` to ``other``.
+        The unit of the result will be "other / self".
+        """
+        return other.get_expectation() / self.get_expectation()
+
+    def get_unit_of_exchange_rate_to(self, other: 'Currency') -> str:
+        """
+        Returns the unit of exchange rate, exchanging from ``self`` to ``other``.
+        The unit will be "other / self"
+        """
+        return f'{other.symbol}/{self.symbol}'
+
     def get_frozen(self) -> float:
         return self.total_currency - self.rotating
 
