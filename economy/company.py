@@ -41,11 +41,14 @@ class Company:
             other.balance += amount
             return amount * self.currency.get_expectation()
 
-        elit = self.pay(2)
+        elit = self.pay(amount)
         other.earn(elit)
         return elit
 
     def get_paid_by(self, other: 'Company', amount: float):
+        """ Get paid by ``other``. ``amount`` is in currency of ``self`` """
+        if self.currency != other.currency:
+            amount *= other.currency.get_exchange_rate_to(self.currency)
         return other.pay_to(self, amount)
 
     def get_balance_in_elit(self):
