@@ -1,6 +1,6 @@
 from economy import Currency, Company
 
-terro = Currency('테로', 'Ŧ', 10**10, 10**10, 0)
+terro = Currency('테로', 'Ŧ', 10000, 10000, 0)
 companies = list()
 
 
@@ -25,6 +25,8 @@ def main():
     print(weiss.pay(weiss.balance))
     print(sch.pay(sch.balance))
     show_state()
+
+    print(terro.rotating)
 
 
 if __name__ == '__main__':

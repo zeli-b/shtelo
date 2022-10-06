@@ -1,6 +1,4 @@
-from math import log
-
-from numpy import exp
+from math import exp, log
 
 from economy.const import ELIT_SYMBOL
 
