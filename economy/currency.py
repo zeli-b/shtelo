@@ -1,6 +1,7 @@
 from math import exp, log, inf
 
 from economy.const import ELIT_SYMBOL, ROTATE_LIMIT_RATE
+from economy.util import get_value
 
 
 def symbolize(elit: float, format_string: str = ',.2f') -> str:
@@ -8,15 +9,16 @@ def symbolize(elit: float, format_string: str = ',.2f') -> str:
 
 
 class Currency:
-    def __init__(self, name: str, symbol: str, total_currency: float, total_value: float, rotating: float):
-        self.name = name
+    def __init__(self, code: str, symbol: str, total_currency: float, rotating: float):
+        self.code = code
         self.symbol = symbol
         self.total_currency = total_currency
-        self.total_value = total_value
         self.rotating = rotating
 
+        self.total_value = get_value(self.code)
+
     def __str__(self) -> str:
-        return f'{self.name}({self.symbol})'
+        return f'{self.code}({self.symbol})'
 
     def get_expectation(self) -> float:
         try:
@@ -55,7 +57,7 @@ class Currency:
 
         if self.total_currency - (self.rotating + delta_frozen) == 0.0:
             raise ValueError(f'Trying to rotate too big value. '
-                             f'This action causes ``{self.name}`` have infinity value per unit.')
+                             f'This action causes ``{self.code}`` have infinity value per unit.')
 
         self.rotating += delta_frozen
         return delta_frozen
