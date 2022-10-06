@@ -2,8 +2,8 @@ from economy import Currency
 
 
 class Company:
-    def __init__(self, discord_id: int, balance: int, currency: Currency):
-        self.discord_id = discord_id
+    def __init__(self, id_: int, balance: int, currency: Currency):
+        self.id = id_
         self.balance = balance
         self.currency = currency
 
@@ -30,6 +30,12 @@ class Company:
         return elit
 
     def pay_to(self, other: 'Company', amount: float):
+        if amount > self.balance:
+            raise ValueError(f'Cannot pay more than they have. '
+                             f'``self`` only have {self.currency.symbolize(self.balance)} and '
+                             f'trying to pay {self.currency.symbolize(amount)}. '
+                             f'(``self.id``={self.id}, ``other.id``={other.id})')
+
         self.balance -= amount
         other.balance += amount
 

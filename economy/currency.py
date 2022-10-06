@@ -1,6 +1,6 @@
-from math import exp, log
+from math import exp, log, inf
 
-from economy.const import ELIT_SYMBOL
+from economy.const import ELIT_SYMBOL, ROTATE_LIMIT_RATE
 
 
 def symbolize(elit: float, format_string: str = ',.2f') -> str:
@@ -19,7 +19,10 @@ class Currency:
         return f'{self.name}({self.symbol})'
 
     def get_expectation(self) -> float:
-        return self.total_value / (self.total_currency - self.rotating)
+        try:
+            return self.total_value / (self.total_currency - self.rotating)
+        except ZeroDivisionError:
+            return inf
 
     def get_frozen(self) -> float:
         return self.total_currency - self.rotating
@@ -32,6 +35,9 @@ class Currency:
         """ Returns formatted ``expectation`` with currency per elit symbol. """
         return f'{format(expectation, format_string)} {ELIT_SYMBOL}/{self.symbol}'
 
+    def get_rotate_limit(self) -> float:
+        return self.total_value * ROTATE_LIMIT_RATE
+
     def rotate(self, elit: float) -> float:
         """
         Rotate ``elit`` amount of Elit into rotation.
@@ -39,12 +45,18 @@ class Currency:
         :return: ``elit`` in currency
         """
 
-        if elit > self.total_value:
-            raise ValueError(f'Cannot rotate more than the total value. '
-                             f'Current total value is {symbolize(self.total_value)} '
+        rotate_limit = self.get_rotate_limit()
+        if elit >= rotate_limit:
+            raise ValueError(f'Cannot rotate more than the rotate limit value. '
+                             f'Current rotate limit is {symbolize(rotate_limit)} '
                              f'and trying to rotate {symbolize(elit)}')
 
         delta_frozen = self.get_frozen() * (exp(elit / self.total_value) - 1)
+
+        if self.total_currency - (self.rotating + delta_frozen) == 0.0:
+            raise ValueError(f'Trying to rotate too big value. '
+                             f'This action causes ``{self.name}`` have infinity value per unit.')
+
         self.rotating += delta_frozen
         return delta_frozen
 
