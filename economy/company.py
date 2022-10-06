@@ -47,3 +47,6 @@ class Company:
 
     def get_paid_by(self, other: 'Company', amount: float):
         return other.pay_to(self, amount)
+
+    def get_balance_in_elit(self):
+        return self.balance * self.currency.get_expectation()
