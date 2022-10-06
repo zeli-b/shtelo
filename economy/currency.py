@@ -3,6 +3,10 @@ from math import exp, log
 from economy.const import ELIT_SYMBOL
 
 
+def symbolize(elit: float, format_string: str = ',.2f') -> str:
+    return f'{format(elit, format_string)} {ELIT_SYMBOL}'
+
+
 class Currency:
     def __init__(self, name: str, symbol: str, total_currency: float, total_value: float, rotating: float):
         self.name = name
@@ -34,6 +38,12 @@ class Currency:
 
         :return: ``elit`` in currency
         """
+
+        if elit > self.total_value:
+            raise ValueError(f'Cannot rotate more than the total value. '
+                             f'Current total value is {symbolize(self.total_value)} '
+                             f'and trying to rotate {symbolize(elit)}')
+
         delta_frozen = self.get_frozen() * (exp(elit / self.total_value) - 1)
         self.rotating += delta_frozen
         return delta_frozen
@@ -44,6 +54,12 @@ class Currency:
 
         :return: ``amount`` in Elit
         """
+
+        if amount > self.rotating:
+            raise ValueError(f'Cannot freeze more than the rotating. '
+                             f'Current rotating is {self.symbolize(self.rotating)} '
+                             f'and trying to freeze {self.symbolize(amount)}')
+
         absolute_value = self.total_value * log(amount / self.get_frozen() + 1)
         self.rotating -= amount
         return absolute_value

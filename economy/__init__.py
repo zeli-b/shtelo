@@ -1,4 +1,4 @@
 from . import const
 
-from .currency import Currency
+from .currency import Currency, symbolize
 from .company import Company
