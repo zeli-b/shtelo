@@ -4,8 +4,8 @@ from economy.const import ELIT_SYMBOL, ROTATE_LIMIT_RATE
 from economy.util import get_value
 
 
-def symbolize(elit: float, format_string: str = ',.2f') -> str:
-    return f'{format(elit, format_string)} {ELIT_SYMBOL}'
+def symbolize(amount: float, symbol: str = ELIT_SYMBOL, format_string: str = ',.2f') -> str:
+    return f'{format(amount, format_string)} {symbol}'
 
 
 class Currency:
@@ -48,11 +48,11 @@ class Currency:
 
     def symbolize(self, amount: float, format_string: str = ',.2f') -> str:
         """ Returns formatted ``amount`` with currency symbol. """
-        return f'{format(amount, format_string)} {self.symbol}'
+        return symbolize(amount, self.symbol, format_string)
 
-    def symbolize_expectation(self, expectation: float, format_string: str = ',.2f') -> str:
-        """ Returns formatted ``expectation`` with currency per elit symbol. """
-        return f'{format(expectation, format_string)} {ELIT_SYMBOL}/{self.symbol}'
+    def get_expectation_unit(self) -> str:
+        """ Returns unit of expectation rate. """
+        return f'{ELIT_SYMBOL}/{self.symbol}'
 
     def get_rotate_limit(self) -> float:
         return self.total_value * ROTATE_LIMIT_RATE
