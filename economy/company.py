@@ -1,4 +1,4 @@
-from shtelo_economy import Currency
+from economy import Currency
 
 
 class Company:

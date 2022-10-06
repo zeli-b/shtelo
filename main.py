@@ -1,4 +1,4 @@
-from shtelo_economy import Currency, Company
+from economy import Currency, Company
 
 terro = Currency('테로', 'Ŧ', 10**10, 10**10, 0)
 companies = list()

@@ -2,7 +2,7 @@ from math import log
 
 from numpy import exp
 
-from shtelo_economy.const import ELIT_SYMBOL
+from economy.const import ELIT_SYMBOL
 
 
 class Currency:
