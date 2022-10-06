@@ -39,9 +39,11 @@ class Company:
         if self.currency == other.currency:
             self.balance -= amount
             other.balance += amount
-        else:
-            elit = self.pay(2)
-            other.earn(elit)
+            return amount * self.currency.get_expectation()
+
+        elit = self.pay(2)
+        other.earn(elit)
+        return elit
 
     def get_paid_by(self, other: 'Company', amount: float):
         return other.pay_to(self, amount)
